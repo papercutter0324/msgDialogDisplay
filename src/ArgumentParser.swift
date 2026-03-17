@@ -53,16 +53,30 @@ class ArgumentParser {
         // Optional fields with defaults
         let title = flags[.title] ?? "Important Information:"
 
-        let widthString = flags[.width]
-        let width = Int(widthString ?? "") ?? 420
+        let width: Int
+        if let widthString = flags[.width] {
+            guard let w = Int(widthString) else {
+                printShortUsageAndExit("Invalid value for --width: \(widthString)")
+            }
+            width = w
+        } else {
+            width = 420
+        }
 
         let iconString = (flags[.icon] ?? "info").lowercased()
         let buttonsString = (flags[.buttons] ?? "ok").lowercased()
 
         let defaultButtonString = flags[.defaultButton]
 
-        let vibrancyString = flags[.vibrancy]
-        let useVibrancy = (vibrancyString?.asBool) ?? true
+        let useVibrancy: Bool
+        if let vibrancyString = flags[.vibrancy] {
+            guard let v = vibrancyString.asBool else {
+                printShortUsageAndExit("Invalid value for --vibrancy: \(vibrancyString)")
+            }
+            useVibrancy = v
+        } else {
+            useVibrancy = true
+        }
 
         // Convert icon
         let icon: DialogIcon
@@ -221,6 +235,7 @@ class ArgumentParser {
         let message = """
         Error: \(reason)
         Run \(prog) -h or --help for usage.
+        
         """
         print(message)
         fflush(stdout)
@@ -233,36 +248,62 @@ class ArgumentParser {
     private static func parseFlags(from parameters: [String]) -> [Key: String] {
         var result: [Key: String] = [:]
         var index = 0
+        
+        func fail(_ message: String) -> Never {
+            printShortUsageAndExit(message)
+        }
+        
         while index < parameters.count {
             let token = parameters[index]
 
+            // ---------------------------------
+            // Long flags: --key or --key=value
+            // ---------------------------------
             if token.hasPrefix("--") {
-                // Long flag
-                let flagBody = String(token.drop(while: { $0 == "-" }))
+                let flagBody = String(token.dropFirst(2))
+                
+                guard flagBody.isEmpty == false else {
+                    fail("Invalid flag: \(token)")
+                }
+                
                 if let eqIndex = flagBody.firstIndex(of: "=") {
                     let keyPart = String(flagBody[..<eqIndex])
                     let valuePart = String(flagBody[flagBody.index(after: eqIndex)...])
-                    if let key = Key(rawValue: keyPart) { result[key] = valuePart }
+                    
+                    guard let key = Key(rawValue: keyPart) else {
+                        fail("Unknown option: --\(keyPart)")
+                    }
+
+                    result[key] = valuePart
                     index += 1
                 } else {
-                    if let key = Key(rawValue: flagBody) {
-                        if index + 1 < parameters.count, parameters[index + 1].hasPrefix("-") == false {
-                            result[key] = parameters[index + 1]
-                            index += 2
-                        } else {
-                            result[key] = "true"
-                            index += 1
-                        }
+                    guard let key = Key(rawValue: flagBody) else {
+                        fail("Unknown option: --\(flagBody)")
+                    }
+                    
+                    if index + 1 < parameters.count,
+                       parameters[index + 1].hasPrefix("-") == false {
+                        
+                        result[key] = parameters[index + 1]
+                        index += 2
                     } else {
+                        result[key] = "true"
                         index += 1
                     }
                 }
+            // ----------------------------
+            // Short flags: -k or -k=value
+            // ----------------------------
             } else if token.hasPrefix("-") {
-                // Short flag(s). We only support single-letter flags, not bundles like -abc.
-                let flagBody = String(token.drop(while: { $0 == "-" }))
-                // Support -k=value as well
+                let flagBody = String(token.dropFirst(1))
+                
+                guard flagBody.isEmpty == false else {
+                    fail("Invalid flag: \(token)")
+                }
+                
                 let keyChar: String
                 let valueAfterEq: String?
+                
                 if let eqIndex = flagBody.firstIndex(of: "=") {
                     keyChar = String(flagBody[..<eqIndex])
                     valueAfterEq = String(flagBody[flagBody.index(after: eqIndex)...])
@@ -271,6 +312,10 @@ class ArgumentParser {
                     valueAfterEq = nil
                 }
 
+                guard keyChar.count == 1 else {
+                    fail("Invalid short flag: -\(keyChar). Use single-letter flags like -m, -t, -w.")
+                }
+                
                 func mapShort(_ s: String) -> Key? {
                     switch s {
                     case "h": return .help
@@ -285,26 +330,30 @@ class ArgumentParser {
                     default: return nil
                     }
                 }
+                
+                guard let key = mapShort(keyChar) else {
+                    fail("Unknown option: -\(keyChar)")
+                }
 
-                if let key = mapShort(keyChar) {
-                    if let v = valueAfterEq {
-                        result[key] = v
-                        index += 1
-                    } else if index + 1 < parameters.count, parameters[index + 1].hasPrefix("-") == false {
-                        result[key] = parameters[index + 1]
-                        index += 2
-                    } else {
-                        result[key] = "true"
-                        index += 1
-                    }
+                if let v = valueAfterEq {
+                    result[key] = v
+                    index += 1
+                } else if index + 1 < parameters.count, parameters[index + 1].hasPrefix("-") == false {
+                    result[key] = parameters[index + 1]
+                    index += 2
                 } else {
+                    result[key] = "true"
                     index += 1
                 }
+
+            // ----------------------------
+            // Non-flag input (not allowed)
+            // ----------------------------
             } else {
-                // Not a flag; ignore (no positional support)
-                index += 1
+                fail("Unexpected argument: \(token)")
             }
         }
+        
         return result
     }
 }
