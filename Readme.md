@@ -1,4 +1,4 @@
-# Dialog CLI
+# msgDialogDisplay
 
 A lightweight command-line utility for displaying configurable dialog windows.  
 Supports customizable messages, titles, button sets, icons, and behavior through a simple flag-based interface.
