@@ -18,11 +18,11 @@ class DialogWindow {
         
         let marginLeft: CGFloat = 20
         let marginRight: CGFloat = 20
-        let marginTop: CGFloat = 20
+        let marginTop: CGFloat = 10
         let iconSize: CGFloat = 64
         let iconTextSpacing: CGFloat = 20
         let buttonSpacing: CGFloat = 12
-        let buttonBottomMargin: CGFloat = 20
+        let buttonBottomMargin: CGFloat = 10
         let titleHeight: CGFloat = 20
         let messageSpacing: CGFloat = 6
         let textX = marginLeft + iconSize + iconTextSpacing
