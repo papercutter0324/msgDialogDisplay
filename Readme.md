@@ -20,7 +20,7 @@ Supports customizable messages, titles, button sets, icons, and behavior through
 ## Usage
 
 ```bash
-dialog-cli -m <message> [options]
+msgDialogDisplay -m <message> [options]
 ```
 
 ---
@@ -36,7 +36,7 @@ dialog-cli -m <message> [options]
 | `-w` | `--width <int>`                 | Dialog width (default: 420)                      |
 | `-i` | `--icon <type>`                 | Icon type (default: info)                        |
 | `-b` | `--buttons <set>`               | Button set (default: ok)                         |
-| `-d` | `--defaultButton <index|label>` | Default button                                   |
+| `-d` | `--defaultButton <index/label>` | Default button                                   |
 | `-v` | `--vibrancy <bool>`             | Enable or disable vibrancy (default: true)       |
 
 ---
@@ -63,7 +63,7 @@ dialog-cli -m <message> [options]
 Aliases:
 - information → info
 - exclamation → warning
-- critical → error
+- critical    → error
 
 ---
 
@@ -71,26 +71,15 @@ Aliases:
 
 The default button can be specified using either a 1-based index or a label.
 
-Index:
+Example Index:
 ```bash
 -d 1
 ```
 
-Label:
+Example Label:
 ```bash
 -d cancel
--d yes
--d retry
 ```
-
-Supported labels:
-- ok, cancel
-- yes, no
-- retry, ignore, abort
-
-Aliases:
-- okay → ok
-- esc, escape → cancel
 
 ---
 
@@ -98,43 +87,17 @@ Aliases:
 
 Basic dialog:
 ```bash
-dialog-cli -m "Hello world"
+msgDialogDisplay -m "Hello world"
 ```
 
 Confirmation dialog:
 ```bash
-dialog-cli -m "Proceed?" -t "Confirm" -b okcancel -d cancel
-```
-
-Retry dialog with warning icon:
-```bash
-dialog-cli -m "Try again?" -b retrycancel -d 1 -i warning
+msgDialogDisplay -m "Proceed?" -t "Confirm" -b okcancel -d cancel
 ```
 
 Custom width and disabled vibrancy:
 ```bash
-dialog-cli -m "Wide dialog" -w 600 -v false
-```
-
----
-
-## Argument Rules
-
-- Both short (-m) and long (--message) flags are supported
-- Values can be passed as separate arguments or using =
-- Boolean values accept: true, false, yes, no, 1, 0, on, off
-- Unknown flags and invalid values result in an error
-
----
-
-## Error Handling
-
-Invalid input is rejected with a clear message and a non-zero exit code.
-
-Example:
-```bash
-Error: Invalid value for --width: abc
-Run dialog-cli -h or --help for usage.
+msgDialogDisplay -m "Wide dialog" -w 600 -v false
 ```
 
 ---
@@ -146,15 +109,3 @@ swift build -c release
 ```
 
 ---
-
-## License
-
-Specify your license here.
-
----
-
-## Notes
-
-- This tool does not support positional arguments
-- All inputs must be provided using flags
-- Default values are applied when optional flags are omitted
