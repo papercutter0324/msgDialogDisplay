@@ -30,9 +30,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0D1535A02F698AA100DBCB50 /* msgDialogDisplay */ = {
+		0D1535A02F698AA100DBCB50 /* src */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = msgDialogDisplay;
+			path = src;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -53,7 +53,7 @@
 		0D1535952F698AA100DBCB50 = {
 			isa = PBXGroup;
 			children = (
-				0D1535A02F698AA100DBCB50 /* msgDialogDisplay */,
+				0D1535A02F698AA100DBCB50 /* src */,
 				0D1535A82F698AB400DBCB50 /* Frameworks */,
 				0D15359F2F698AA100DBCB50 /* Products */,
 			);
@@ -92,7 +92,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				0D1535A02F698AA100DBCB50 /* msgDialogDisplay */,
+				0D1535A02F698AA100DBCB50 /* src */,
 			);
 			name = msgDialogDisplay;
 			packageProductDependencies = (
