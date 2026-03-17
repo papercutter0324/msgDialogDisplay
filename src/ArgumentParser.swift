@@ -1,4 +1,5 @@
 import Foundation
+import Darwin
 
 class ArgumentParser {
 
@@ -11,11 +12,17 @@ class ArgumentParser {
         case buttons
         case defaultButton
         case vibrancy
+        case help
+        case version
     }
 
+    // Hardcoded version info for binary releases
+    private static let hardcodedVersion = "1.0.0"
+    private static let hardcodedBuild = "1"
+
     /// Parse command line arguments into a DialogConfig using flags only.
-    /// Short aliases supported: -m, -t, -w, -i, -b, -d, -v
-    /// Long flags supported: --message, --title, --width, --icon, --buttons, --defaultButton, --vibrancy
+    /// Short aliases supported: -h, -V, -m, -t, -w, -i, -b, -d, -v
+    /// Long flags supported: --help, --version, --message, --title, --width, --icon, --buttons, --defaultButton, --vibrancy
     static func parse() -> DialogConfig {
         let args = CommandLine.arguments
         let parameters = Array(args.dropFirst())
@@ -23,10 +30,24 @@ class ArgumentParser {
         // Build flags dictionary (no positional support)
         let flags = parseFlags(from: parameters)
 
+        // No arguments: print a short hint and exit
+        if parameters.isEmpty {
+            printShortUsageAndExit("No arguments provided.")
+        }
+
+        // Help flag: print usage and exit early
+        if flags[.help] != nil {
+            printHelpAndExit()
+        }
+
+        // Version flag: print version and exit early
+        if flags[.version] != nil {
+            printVersionAndExit()
+        }
+
         // Message is required
         guard let message = flags[.message], message.isEmpty == false else {
-            // You can customize this behavior; for now, we provide a helpful fatalError.
-            fatalError("Missing required parameter: --message or -m")
+            printShortUsageAndExit("Missing required argument: --message")
         }
 
         // Optional fields with defaults
@@ -39,7 +60,6 @@ class ArgumentParser {
         let buttonsString = (flags[.buttons] ?? "ok").lowercased()
 
         let defaultButtonString = flags[.defaultButton]
-        let providedDefaultButton = Int(defaultButtonString ?? "")
 
         let vibrancyString = flags[.vibrancy]
         let useVibrancy = (vibrancyString?.asBool) ?? true
@@ -84,30 +104,32 @@ class ArgumentParser {
             defaultButton = 1
         }
 
-        // If user provided an explicit default button value, accept either index or name
-        if let provided = providedDefaultButton {
-            // Numeric index provided; respect it
-            defaultButton = provided
-        } else if let name = defaultButtonString, name.isEmpty == false {
-            // Try to map a name like "OK", "Cancel", "Retry" to its 1-based position in the current set
-            let normalized = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-
-            // Allow a few common aliases
-            func normalizeAlias(_ s: String) -> String {
-                switch s {
-                case "okay": return "ok"
-                case "esc", "escape": return "cancel"
-                default: return s
+        // If user provided an explicit default button value, accept either index or name; validate and give a concise hint on error
+        if let value = defaultButtonString, value.isEmpty == false {
+            if let idx = Int(value) {
+                if idx < 1 || idx > buttonSet.buttonList.count {
+                    printShortUsageAndExit("Invalid value for --defaultButton: \(value). Provide an index 1..\(buttonSet.buttonList.count) or a button label: OK, Cancel, Yes, No, Retry, Ignore, Abort.")
+                } else {
+                    defaultButton = idx
                 }
-            }
-
-            let target = normalizeAlias(normalized)
-
-            if let idx = buttonSet.buttonList.firstIndex(where: { $0.title.lowercased() == target }) {
-                defaultButton = idx + 1 // convert to 1-based index
             } else {
-                // Also try matching against enum case keywords for robustness
-                if let idx = buttonSet.buttonList.firstIndex(where: { button in
+                // Try to map a name like "OK", "Cancel", "Retry" to its 1-based position in the current set
+                let normalized = value.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+
+                // Allow a few common aliases
+                func normalizeAlias(_ s: String) -> String {
+                    switch s {
+                    case "okay": return "ok"
+                    case "esc", "escape": return "cancel"
+                    default: return s
+                    }
+                }
+
+                let target = normalizeAlias(normalized)
+
+                if let idx = buttonSet.buttonList.firstIndex(where: { $0.title.lowercased() == target }) {
+                    defaultButton = idx + 1 // convert to 1-based index
+                } else if let idx = buttonSet.buttonList.firstIndex(where: { button in
                     switch button {
                     case .ok: return target == "ok"
                     case .cancel: return target == "cancel"
@@ -119,6 +141,8 @@ class ArgumentParser {
                     }
                 }) {
                     defaultButton = idx + 1
+                } else {
+                    printShortUsageAndExit("Invalid value for --defaultButton: \(value). Provide an index 1..\(buttonSet.buttonList.count) or a button label: OK, Cancel, Yes, No, Retry, Ignore, Abort.")
                 }
             }
         }
@@ -133,6 +157,74 @@ class ArgumentParser {
             defaultButton: defaultButton,
             useVibrancy: useVibrancy
         )
+    }
+
+    /// Print usage information and exit the program.
+    private static func printHelpAndExit() -> Never {
+        let prog = URL(fileURLWithPath: CommandLine.arguments.first ?? "program").lastPathComponent
+        let usage = """
+        Usage:
+          \(prog) -m <message> [options]
+
+        Options:
+          -h, --help                        Show this help and exit
+          -V, --version                     Show version and exit
+          -m, --message <text>              Required. Dialog message text.
+          -t, --title <text>                Optional. (Default: \"Important Information:\")
+          -w, --width <int>                 Optional. (Default: 420)
+          -i, --icon <type>                 Optional. (Default: info)
+          -b, --buttons <set>               Optional. (Default: ok)
+          -d, --defaultButton <index|label> Optional. 1-based index or a button label (OK, Cancel, Yes, No, Retry, Ignore, Abort).
+          -v, --vibrancy <bool>             Optional. true|false. (Default: true)
+
+        Button sets:
+          ok
+          okcancel
+          yesno
+          yesnocancel
+          retrycancel
+          abortretryignore
+
+        Icon types:
+          info
+          warning
+          error
+
+        Examples:
+          \(prog) -m \"Hello\"
+          \(prog) -m \"Proceed?\" -t \"Confirm\" -b okcancel -d cancel
+          \(prog) -m \"Try again?\" -b retrycancel -d 1 -i warning
+        
+        """
+        print(usage)
+        fflush(stdout)
+        exit(0)
+    }
+
+    /// Print version information and exit the program.
+    private static func printVersionAndExit() -> Never {
+        let prog = URL(fileURLWithPath: CommandLine.arguments.first ?? "program").lastPathComponent
+        let versionLine: String
+        if Self.hardcodedBuild.isEmpty {
+            versionLine = "\(prog) \(Self.hardcodedVersion)"
+        } else {
+            versionLine = "\(prog) \(Self.hardcodedVersion) (\(Self.hardcodedBuild))"
+        }
+        print(versionLine)
+        fflush(stdout)
+        exit(0)
+    }
+
+    /// Print a short error and hint to use -h/--help, then exit with a non-zero status.
+    private static func printShortUsageAndExit(_ reason: String) -> Never {
+        let prog = URL(fileURLWithPath: CommandLine.arguments.first ?? "program").lastPathComponent
+        let message = """
+        Error: \(reason)
+        Run \(prog) -h or --help for usage.
+        """
+        print(message)
+        fflush(stdout)
+        exit(64)
     }
 
     // MARK: - Helpers
@@ -181,6 +273,7 @@ class ArgumentParser {
 
                 func mapShort(_ s: String) -> Key? {
                     switch s {
+                    case "h": return .help
                     case "m": return .message
                     case "t": return .title
                     case "w": return .width
@@ -188,6 +281,7 @@ class ArgumentParser {
                     case "b": return .buttons
                     case "d": return .defaultButton
                     case "v": return .vibrancy
+                    case "V": return .version
                     default: return nil
                     }
                 }
