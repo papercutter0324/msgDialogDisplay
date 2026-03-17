@@ -47,15 +47,15 @@ enum DialogButtons {
             case .ok:
                 return [.ok]
             case .okCancel:
-                return [.ok, .cancel]
+                return [.cancel, .ok]
             case .yesNo:
-                return [.yes, .no]
+                return [.no, .yes]
             case .yesNoCancel:
-                return [.yes, .no, .cancel]
+                return [.cancel, .no, .yes]
             case .retryCancel:
-                return [.retry, .cancel]
+                return [.cancel, .retry]
             case .abortRetryIgnore:
-                return [.abort, .retry, .ignore]
+                return [.ignore, .retry, .abort]
             }
         }
     }
