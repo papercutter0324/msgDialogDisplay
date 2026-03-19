@@ -4,6 +4,6 @@
 import Foundation
 
 enum CLIVersion {
-    static let version = "1.0.0"
-    static let build = "1"
+    static let version = "2.0.0"
+    static let build = "2"
 }
