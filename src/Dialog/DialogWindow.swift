@@ -208,6 +208,7 @@ class DialogWindow {
         window.center()
         NSApp.activate(ignoringOtherApps: true)
         window.makeKeyAndOrderFront(nil)
+        window.level = .modalPanel
         
         return window
     }

@@ -1,6 +1,6 @@
 import AppKit
 
-let config = ArgumentParser.parse()
+let config = CLICommand().run()
 
 let controller = DialogController()
 let windowBuilder = DialogWindow(config: config, controller: controller)
