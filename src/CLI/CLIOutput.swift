@@ -40,6 +40,7 @@ enum CLIOutput {
           \(program) -m "Hello"
           \(program) -m "Proceed?" -t "Confirm" -b okcancel -d cancel
           \(program) -m "Try again?" -b retrycancel -d 1 -i warning -T true
+        
         """
         print(usage)
         fflush(stdout)
