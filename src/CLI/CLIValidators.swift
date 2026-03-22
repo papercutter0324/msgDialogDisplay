@@ -11,6 +11,7 @@ struct DialogOptions {
     let buttons: DialogButtons.Set
     let defaultButton: String? // either index (as string) or label; resolved later
     let useVibrancy: Bool
+    let showTitleInBar: Bool
 }
 
 struct CLIValidators {
@@ -62,6 +63,16 @@ struct CLIValidators {
         } else {
             useVibrancy = true
         }
+        
+        let showTitleInBar: Bool
+        if let tStr = opts.titleInBar {
+            guard let t = tStr.asBool else {
+                throw CLIError.invalidValue(flag: "--titleInBar", value: tStr, expected: "true|false")
+            }
+            showTitleInBar = t
+        } else {
+            showTitleInBar = false
+        }
 
         return DialogOptions(
             message: message,
@@ -70,7 +81,8 @@ struct CLIValidators {
             icon: icon,
             buttons: buttons,
             defaultButton: opts.defaultButton,
-            useVibrancy: useVibrancy
+            useVibrancy: useVibrancy,
+            showTitleInBar: showTitleInBar
         )
     }
 }

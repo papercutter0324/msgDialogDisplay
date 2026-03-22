@@ -85,7 +85,7 @@ class DialogWindow {
         // Calculate total window height
         //--------------------------------------------------
         // Height = top margin + max(icon/title area) + message + spacing + buttons + bottom margin
-        let contentHeight = max(iconSize, titleHeight + messageSpacing + messageHeight) + marginTop + buttonBottomMargin + 30
+        let contentHeight = max(iconSize, (config.showTitleInBar ? 0 : (titleHeight + messageSpacing)) + messageHeight) + marginTop + buttonBottomMargin + 30
         
         
         //--------------------------------------------------
@@ -100,7 +100,7 @@ class DialogWindow {
         )
         
         window.styleMask.remove(.resizable)
-        window.title = ""
+        window.title = config.showTitleInBar ? config.title : ""
         window.isReleasedWhenClosed = false
         
         //--------------------------------------------------
@@ -141,10 +141,14 @@ class DialogWindow {
         //--------------------------------------------------
         // Title
         //--------------------------------------------------
-        let titleLabel = NSTextField(labelWithString: config.title)
-        titleLabel.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
-        titleLabel.frame = NSRect(x: marginLeft + iconSize + iconTextSpacing, y: 0, width: textWidth, height: titleHeight)
-        content.addSubview(titleLabel)
+        var titleLabel: NSTextField?
+        if config.showTitleInBar == false {
+            let label = NSTextField(labelWithString: config.title)
+            label.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
+            label.frame = NSRect(x: marginLeft + iconSize + iconTextSpacing, y: 0, width: textWidth, height: titleHeight)
+            content.addSubview(label)
+            titleLabel = label
+        }
         
         //--------------------------------------------------
         // Text area
@@ -158,8 +162,13 @@ class DialogWindow {
         //--------------------------------------------------
         
         let topY = contentHeight - marginTop
-        titleLabel.frame.origin.y = topY - titleHeight
-        messageLabel.frame.origin.y = titleLabel.frame.origin.y - messageSpacing - messageHeight
+        if let titleLabel = titleLabel {
+            titleLabel.frame.origin.y = topY - titleHeight
+            messageLabel.frame.origin.y = titleLabel.frame.origin.y - messageSpacing - messageHeight
+        } else {
+            // No in-content title; place message directly under the top margin
+            messageLabel.frame.origin.y = topY - messageHeight
+        }
         iconView.frame.origin.y = topY - iconSize
         
         //--------------------------------------------------

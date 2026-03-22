@@ -9,6 +9,7 @@ struct DialogConfig {
     let buttons: DialogButtons.Set
     let defaultButton: Int
     let useVibrancy: Bool
+    let showTitleInBar: Bool
 
     init(
         title: String,
@@ -17,7 +18,8 @@ struct DialogConfig {
         icon: DialogIcon,
         buttons: DialogButtons.Set,
         defaultButton: Int,
-        useVibrancy: Bool
+        useVibrancy: Bool,
+        showTitleInBar: Bool
     ) {
         self.title = title
         self.message = message
@@ -26,5 +28,6 @@ struct DialogConfig {
         self.buttons = buttons
         self.defaultButton = defaultButton
         self.useVibrancy = useVibrancy
+        self.showTitleInBar = showTitleInBar
     }
 }

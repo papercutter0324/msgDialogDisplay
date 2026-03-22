@@ -82,7 +82,8 @@ struct CLICommand {
                 icon: validated.icon,
                 buttons: validated.buttons,
                 defaultButton: defaultIndex,
-                useVibrancy: validated.useVibrancy
+                useVibrancy: validated.useVibrancy,
+                showTitleInBar: validated.showTitleInBar
             )
 
         } catch let error as CLIError {

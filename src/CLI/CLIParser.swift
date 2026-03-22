@@ -13,20 +13,22 @@ struct CLIOptions {
     var buttons: String?
     var defaultButton: String?
     var vibrancy: String?
+    var titleInBar: String?
 }
 
 struct CLIParser {
 
     private enum Key: String, CaseIterable {
-        case message
-        case title
-        case width
-        case icon
-        case buttons
-        case defaultButton
-        case vibrancy
-        case help
-        case version
+            case message
+            case title
+            case width
+            case icon
+            case buttons
+            case defaultButton
+            case vibrancy
+            case titleInBar
+            case help
+            case version
     }
 
     static func parse(_ parameters: [String]) throws -> CLIOptions {
@@ -36,16 +38,17 @@ struct CLIParser {
 
         func mapShort(_ s: String) -> Key? {
             switch s {
-            case "h": return .help
-            case "V": return .version
-            case "m": return .message
-            case "t": return .title
-            case "w": return .width
-            case "i": return .icon
-            case "b": return .buttons
-            case "d": return .defaultButton
-            case "v": return .vibrancy
-            default: return nil
+                case "m": return .message
+                case "t": return .title
+                case "w": return .width
+                case "i": return .icon
+                case "b": return .buttons
+                case "d": return .defaultButton
+                case "v": return .vibrancy
+                case "T": return .titleInBar
+                case "h": return .help
+                case "V": return .version
+                default: return nil
             }
         }
 
@@ -116,6 +119,7 @@ struct CLIParser {
         opts.buttons = result[.buttons]
         opts.defaultButton = result[.defaultButton]
         opts.vibrancy = result[.vibrancy]
+        opts.titleInBar = result[.titleInBar]
 
         return opts
     }

@@ -21,6 +21,7 @@ enum CLIOutput {
           -b, --buttons <set>               Optional. (Default: ok)
           -d, --defaultButton <index|label> Optional. Button label (OK, Cancel, Yes, etc.) or index number.
           -v, --vibrancy <bool>             Optional. true|false. (Default: true)
+          -T, --titleInBar <bool>           Optional. true|false. (Default: false)
 
         Button sets:
           ok
@@ -38,8 +39,7 @@ enum CLIOutput {
         Examples:
           \(program) -m "Hello"
           \(program) -m "Proceed?" -t "Confirm" -b okcancel -d cancel
-          \(program) -m "Try again?" -b retrycancel -d 1 -i warning
-        
+          \(program) -m "Try again?" -b retrycancel -d 1 -i warning -T true
         """
         print(usage)
         fflush(stdout)
