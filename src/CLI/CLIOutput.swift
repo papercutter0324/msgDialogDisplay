@@ -16,10 +16,10 @@ enum CLIOutput {
           -V, --version                     Show version and exit
           -m, --message <text>              Required. Dialog message text.
           -t, --title <text>                Optional. (Default: "Important Information:")
-          -w, --width <int>                 Optional. (Default: 420)
+          -w, --width <int>                 Optional. (Default: 400)
           -i, --icon <type>                 Optional. (Default: info)
           -b, --buttons <set>               Optional. (Default: ok)
-          -d, --defaultButton <index|label> Optional. 1-based index or a button label (OK, Cancel, Yes, No, Retry, Ignore, Abort).
+          -d, --defaultButton <index|label> Optional. Button label (OK, Cancel, Yes, etc.) or index number.
           -v, --vibrancy <bool>             Optional. true|false. (Default: true)
 
         Button sets:

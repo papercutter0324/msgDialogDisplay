@@ -60,7 +60,7 @@ class ArgumentParser {
             }
             width = w
         } else {
-            width = 420
+            width = 400
         }
 
         let iconString = (flags[.icon] ?? "info").lowercased()

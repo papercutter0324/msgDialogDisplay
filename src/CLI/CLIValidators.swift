@@ -29,7 +29,7 @@ struct CLIValidators {
             }
             width = intVal
         } else {
-            width = 420
+            width = 400
         }
 
         let iconString = (opts.icon ?? "info").lowercased()
