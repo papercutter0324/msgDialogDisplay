@@ -17,7 +17,26 @@ Supports customizable messages, titles, button sets, icons, and behavior through
 
 ---
 
+## Requirements
+
+- macOS (AppKit/PDFKit)
+- Xcode (to build)
+- Swift ArgumentParser (SPM dependency included by the Xcode project)
+
+---
+
+## Installation
+
+- Open the project in Xcode and build the “msgDialogDisplay” scheme in Release.
+- The resulting binary will be in your build products (DerivedData). Copy it to a location on your `$PATH` if desired.
+
+---
+
 ## Usage
+
+Run the tool from Terminal or a shell command, such as by an AppleScript, and provide message and any desired optional valus.
+
+### Basic Syntax
 
 ```bash
 msgDialogDisplay -m <message> [options]
@@ -27,17 +46,18 @@ msgDialogDisplay -m <message> [options]
 
 ## Options
 
-| Flag | Long Form                       | Description                                      |
-|------|---------------------------------|--------------------------------------------------|
-| `-h` | `--help`                        | Show help and exit                               |
-| `-V` | `--version`                     | Show version and exit                            |
-| `-m` | `--message <text>`              | Required. Dialog message text                    |
-| `-t` | `--title <text>`                | Dialog title (default: "Important Information:") |
-| `-w` | `--width <int>`                 | Dialog width (default: 420)                      |
-| `-i` | `--icon <type>`                 | Icon type (default: info)                        |
-| `-b` | `--buttons <set>`               | Button set (default: ok)                         |
-| `-d` | `--defaultButton <index/label>` | Default button                                   |
-| `-v` | `--vibrancy <bool>`             | Enable or disable vibrancy (default: true)       |
+| Flag | Long Form                       | Description                                   | Optional | Default                  |
+|------|---------------------------------|----------------------------------------------------------|--------------------------|
+| `-m` | `--message <text>`              | Message to display. (Required)                |     X    |                          |
+| `-t` | `--title <text>`                | Message Title       (Optional)                |     √    | "Important Information:" |
+| `-w` | `--width <int>`                 | Custom dialog width (Optional)                |     √    | 400                      |
+| `-i` | `--icon <type>`                 | Message icon:       (Optional)                |     √    | "info"                   |
+| `-b` | `--buttons <set>`               | Button combination  (Optional)                |     √    | "ok"                     |
+| `-d` | `--defaultButton <index/label>` | Default button      (Optional)                |     √    | 1                        |
+| `-v` | `--vibrant <bool>`              | Use new vibrancy-style dialogs  (Optional)    |     √    | false                    |
+| `-T` | `--inTitleBar <bool>`           | Title in title bar instead of content window. |     √    | false                    |
+|      | `--version`                     | Show version and exit                         |     √    |                          |
+| `-h` | `--help`                        | Show help and exit                            |     √    |                          |
 
 ---
 
@@ -62,24 +82,9 @@ msgDialogDisplay -m <message> [options]
 
 Aliases:
 - information → info
+- question    → info
 - exclamation → warning
 - critical    → error
-
----
-
-## Default Button
-
-The default button can be specified using either a 1-based index or a label.
-
-Example Index:
-```bash
--d 1
-```
-
-Example Label:
-```bash
--d cancel
-```
 
 ---
 
@@ -99,13 +104,3 @@ Custom width and disabled vibrancy:
 ```bash
 msgDialogDisplay -m "Wide dialog" -w 600 -v false
 ```
-
----
-
-## Build
-
-```bash
-swift build -c release
-```
-
----
