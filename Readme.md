@@ -47,14 +47,14 @@ msgDialogDisplay -m <message> [options]
 ## Options
 
 | Flag | Long Form                       | Description                                   | Optional | Default                  |
-|------|---------------------------------|----------------------------------------------------------|--------------------------|
-| `-m` | `--message <text>`              | Message to display. (Required)                |     X    |                          |
-| `-t` | `--title <text>`                | Message Title       (Optional)                |     √    | "Important Information:" |
-| `-w` | `--width <int>`                 | Custom dialog width (Optional)                |     √    | 400                      |
-| `-i` | `--icon <type>`                 | Message icon:       (Optional)                |     √    | "info"                   |
-| `-b` | `--buttons <set>`               | Button combination  (Optional)                |     √    | "ok"                     |
-| `-d` | `--defaultButton <index/label>` | Default button      (Optional)                |     √    | 1                        |
-| `-v` | `--vibrant <bool>`              | Use new vibrancy-style dialogs  (Optional)    |     √    | false                    |
+|------|---------------------------------|-----------------------------------------------|----------|--------------------------|
+| `-m` | `--message <text>`              | Message to display.                           |     X    |                          |
+| `-t` | `--title <text>`                | Message Title                                 |     √    | "Important Information:" |
+| `-w` | `--width <int>`                 | Custom dialog width                           |     √    | 400                      |
+| `-i` | `--icon <type>`                 | Message icon:                                 |     √    | "info"                   |
+| `-b` | `--buttons <set>`               | Button combination                            |     √    | "ok"                     |
+| `-d` | `--defaultButton <index/label>` | Default button                                |     √    | 1                        |
+| `-v` | `--vibrant <bool>`              | Use new vibrancy-style dialogs                |     √    | false                    |
 | `-T` | `--inTitleBar <bool>`           | Title in title bar instead of content window. |     √    | false                    |
 |      | `--version`                     | Show version and exit                         |     √    |                          |
 | `-h` | `--help`                        | Show help and exit                            |     √    |                          |
@@ -100,7 +100,7 @@ Confirmation dialog:
 msgDialogDisplay -m "Proceed?" -t "Confirm" -b okcancel -d cancel
 ```
 
-Custom width and disabled vibrancy:
+Custom width and enabled vibrancy:
 ```bash
-msgDialogDisplay -m "Wide dialog" -w 600 -v false
+msgDialogDisplay -m "Wide dialog" -w 600 -v true
 ```
