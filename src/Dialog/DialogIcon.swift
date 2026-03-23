@@ -3,15 +3,17 @@ import AppKit
 enum DialogIcon {
 
     case warning
+    case exclamation
     case error
     case info
+    case information
     case question
 
     var image: NSImage? {
 
         switch self {
 
-        case .warning:
+        case .warning, .exclamation:
 
             // FUTURE: Replace with embedded asset
             // return NSImage(named: "dialog_warning")
@@ -25,7 +27,7 @@ enum DialogIcon {
 
             return NSImage(named: NSImage.stopProgressTemplateName)
 
-        case .info:
+        case .info, .information:
 
             // FUTURE: Replace with embedded asset
             // return NSImage(named: "dialog_info")

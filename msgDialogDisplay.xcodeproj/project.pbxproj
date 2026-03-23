@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0D1535AA2F698AB400DBCB50 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1535A92F698AB400DBCB50 /* AppKit.framework */; };
 		0D1535AC2F698ABA00DBCB50 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1535AB2F698ABA00DBCB50 /* Foundation.framework */; };
+		0D977CE92F71899E002F7D91 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 0D977CE82F71899E002F7D91 /* ArgumentParser */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D977CE92F71899E002F7D91 /* ArgumentParser in Frameworks */,
 				0D1535AA2F698AB400DBCB50 /* AppKit.framework in Frameworks */,
 				0D1535AC2F698ABA00DBCB50 /* Foundation.framework in Frameworks */,
 			);
@@ -96,6 +98,7 @@
 			);
 			name = msgDialogDisplay;
 			packageProductDependencies = (
+				0D977CE82F71899E002F7D91 /* ArgumentParser */,
 			);
 			productName = msgDialogDisplay;
 			productReference = 0D15359E2F698AA100DBCB50 /* msgDialogDisplay */;
@@ -125,6 +128,9 @@
 			);
 			mainGroup = 0D1535952F698AA100DBCB50;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				0D977CE72F71899E002F7D91 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0D15359F2F698AA100DBCB50 /* Products */;
 			projectDirPath = "";
@@ -310,6 +316,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0D977CE72F71899E002F7D91 /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0D977CE82F71899E002F7D91 /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0D977CE72F71899E002F7D91 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0D1535962F698AA100DBCB50 /* Project object */;
 }
