@@ -28,6 +28,8 @@
 		0D15359E2F698AA100DBCB50 /* msgDialogDisplay */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = msgDialogDisplay; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D1535A92F698AB400DBCB50 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		0D1535AB2F698ABA00DBCB50 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0D977CED2F71A100002F7D91 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		0D977CEE2F71A120002F7D91 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -55,6 +57,8 @@
 		0D1535952F698AA100DBCB50 = {
 			isa = PBXGroup;
 			children = (
+				0D977CED2F71A100002F7D91 /* Readme.md */,
+				0D977CEE2F71A120002F7D91 /* LICENSE */,
 				0D1535A02F698AA100DBCB50 /* src */,
 				0D1535A82F698AB400DBCB50 /* Frameworks */,
 				0D15359F2F698AA100DBCB50 /* Products */,
