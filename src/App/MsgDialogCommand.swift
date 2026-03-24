@@ -1,5 +1,9 @@
-// MsgDialogCommand.swift
-// Swift ArgumentParser-based CLI entry point
+//
+//  MsgDialogCommand.swift
+//  msgDialogDisplay
+//
+//  Created by Warren Feltmate on 3/16/26.
+//
 
 import ArgumentParser
 import AppKit
