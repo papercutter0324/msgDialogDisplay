@@ -7,7 +7,7 @@ import AppKit
 // MARK: - Argument types
 
 enum IconArg: String, ExpressibleByArgument {
-    case info, information, question, warning, error, exclamation
+    case info, information, question, warning, exclamation, error, critical
 
     init?(argument: String) {
         self.init(rawValue: argument.lowercased())
@@ -17,7 +17,7 @@ enum IconArg: String, ExpressibleByArgument {
         switch self {
         case .info, .information, .question: return .info
         case .warning, .exclamation: return .warning
-        case .error: return .error
+        case .error, .critical: return .error
         }
     }
 }

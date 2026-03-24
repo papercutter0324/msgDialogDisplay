@@ -5,6 +5,7 @@ enum DialogIcon {
     case warning
     case exclamation
     case error
+    case critical
     case info
     case information
     case question
@@ -20,7 +21,7 @@ enum DialogIcon {
 
             return NSImage(named: NSImage.cautionName)
 
-        case .error:
+        case .error, .critical:
 
             // FUTURE: Replace with embedded asset
             // return NSImage(named: "dialog_error")
