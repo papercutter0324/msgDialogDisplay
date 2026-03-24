@@ -5,7 +5,6 @@
 //  Created by Warren Feltmate on 3/16/26.
 //
 
-
 import AppKit
 
 struct AppRunner {

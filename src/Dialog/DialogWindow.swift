@@ -19,10 +19,6 @@ class DialogWindow {
     
     func build() -> NSWindow {
         
-        //--------------------------------------------------
-        // Layout constants
-        //--------------------------------------------------
-        
         let marginLeft: CGFloat = 20
         let marginRight: CGFloat = 20
         let marginTop: CGFloat = 10
@@ -35,7 +31,7 @@ class DialogWindow {
         let textX = marginLeft + iconSize + iconTextSpacing
         
         //--------------------------------------------------
-        // Determine optimal width (macOS-like behavior)
+        // Determine optimal width
         //--------------------------------------------------
 
         let optimalTextWidth = optimalTextWidth(for: config.message)
@@ -50,7 +46,7 @@ class DialogWindow {
         let width = max(CGFloat(config.width), calculatedWidth)
         
         //--------------------------------------------------
-        // First, calculate message size
+        // Calculate message size
         //--------------------------------------------------
         let textWidth = width - textX - marginRight
         let messageLabel = NSTextField(wrappingLabelWithString: config.message)
@@ -91,12 +87,11 @@ class DialogWindow {
         //--------------------------------------------------
         // Calculate total window height
         //--------------------------------------------------
-        // Height = top margin + max(icon/title area) + message + spacing + buttons + bottom margin
         let contentHeight = max(iconSize, (config.showTitleInBar ? 0 : (titleHeight + messageSpacing)) + messageHeight) + marginTop + buttonBottomMargin + 30
         
         
         //--------------------------------------------------
-        // Window
+        // Create window
         //--------------------------------------------------
         
         let window = NSWindow(
@@ -130,7 +125,7 @@ class DialogWindow {
         window.contentView = content
         
         //--------------------------------------------------
-        // Icon
+        // Set icon
         //--------------------------------------------------
         
         let iconView = NSImageView(frame: NSRect(
@@ -146,7 +141,7 @@ class DialogWindow {
         content.addSubview(iconView)
         
         //--------------------------------------------------
-        // Title
+        // Set title
         //--------------------------------------------------
         var titleLabel: NSTextField?
         if config.showTitleInBar == false {
@@ -158,14 +153,14 @@ class DialogWindow {
         }
         
         //--------------------------------------------------
-        // Text area
+        // Create text area
         //--------------------------------------------------
         
         messageLabel.frame.origin = CGPoint(x: marginLeft + iconSize + iconTextSpacing, y: 0)
         content.addSubview(messageLabel)
         
         //--------------------------------------------------
-        // Position elements from top
+        // Position elements
         //--------------------------------------------------
         
         let topY = contentHeight - marginTop
@@ -173,13 +168,12 @@ class DialogWindow {
             titleLabel.frame.origin.y = topY - titleHeight
             messageLabel.frame.origin.y = titleLabel.frame.origin.y - messageSpacing - messageHeight
         } else {
-            // No in-content title; place message directly under the top margin
             messageLabel.frame.origin.y = topY - messageHeight
         }
         iconView.frame.origin.y = topY - iconSize
         
         //--------------------------------------------------
-        // Buttons
+        // Add buttons
         //--------------------------------------------------
         var buttonX = width - marginRight
         let buttonY: CGFloat = buttonBottomMargin
@@ -201,14 +195,12 @@ class DialogWindow {
             
             buttonX -= buttonSpacing
             
-            // Default button
             if index + 1 == config.defaultButton {
                 button.keyEquivalent = "\r"
                 button.keyEquivalentModifierMask = []
                 window.defaultButtonCell = button.cell as? NSButtonCell
             }
             
-            // Cancel
             if buttonType == .cancel {
                 cancelButton = button
             }
