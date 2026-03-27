@@ -89,6 +89,9 @@ struct MsgDialogCommand: ParsableCommand {
     @Option(name: [.customShort("w"), .long], help: "Custom dialog width.")
     var width: Int = 400
 
+    @Option(name: [.customShort("s"), .customLong("buttonSpacing")], help: "Custom spacing between buttons (min 10).")
+    var buttonSpacing: Int? = nil
+
     @Option(name: [.customShort("i"), .long], help: "Message icon: info|warning|error")
     var icon: IconArg = .info
 
@@ -117,6 +120,7 @@ struct MsgDialogCommand: ParsableCommand {
             title: title,
             message: message,
             width: width,
+            buttonSpacing: max(10, buttonSpacing ?? 15),
             icon: icon.toDialogIcon(),
             buttons: set,
             defaultButton: defaultIndex,

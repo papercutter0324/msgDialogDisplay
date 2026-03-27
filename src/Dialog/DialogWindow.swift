@@ -24,11 +24,23 @@ class DialogWindow {
         let marginTop: CGFloat = 10
         let iconSize: CGFloat = 64
         let iconTextSpacing: CGFloat = 20
-        let buttonSpacing: CGFloat = 12
+        let buttonSpacing: CGFloat = CGFloat(config.buttonSpacing)
         let buttonBottomMargin: CGFloat = 10
         let titleHeight: CGFloat = 20
         let messageSpacing: CGFloat = 6
         let textX = marginLeft + iconSize + iconTextSpacing
+        
+        //--------------------------------------------------
+        // Calculate button area (for width constraints)
+        //--------------------------------------------------
+        var totalButtonWidth: CGFloat = 0
+        for buttonType in config.buttons.buttonList {
+            let button = NSButton(title: buttonType.title, target: nil, action: nil)
+            button.sizeToFit()
+            totalButtonWidth += button.frame.width
+        }
+        // Enforce a minimum spacing between buttons
+        totalButtonWidth += CGFloat(config.buttons.buttonList.count - 1) * buttonSpacing
         
         //--------------------------------------------------
         // Determine optimal width
@@ -43,7 +55,10 @@ class DialogWindow {
             optimalTextWidth +
             marginRight
 
-        let width = max(CGFloat(config.width), calculatedWidth)
+        // Ensure the window is wide enough to maintain the minimum spacing between buttons
+        let minWidthForButtons = marginLeft + totalButtonWidth + marginRight
+
+        let width = max(max(CGFloat(config.width), calculatedWidth), minWidthForButtons)
         
         //--------------------------------------------------
         // Calculate message size
@@ -69,20 +84,6 @@ class DialogWindow {
         )).height
 
         messageLabel.frame.size.height = messageHeight
-        
-        //--------------------------------------------------
-        // Calculate button area
-        //--------------------------------------------------
-        var totalButtonWidth: CGFloat = 0
-        var buttonWidths: [CGFloat] = []
-        
-        for buttonType in config.buttons.buttonList {
-            let button = NSButton(title: buttonType.title, target: nil, action: nil)
-            button.sizeToFit()
-            buttonWidths.append(button.frame.width)
-            totalButtonWidth += button.frame.width
-        }
-        totalButtonWidth += CGFloat(config.buttons.buttonList.count - 1) * buttonSpacing
         
         //--------------------------------------------------
         // Calculate total window height
@@ -257,3 +258,4 @@ class DialogWindow {
         return bestWidth
     }
 }
+

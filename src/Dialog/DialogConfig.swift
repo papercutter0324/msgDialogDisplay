@@ -12,6 +12,7 @@ struct DialogConfig {
     let title: String
     let message: String
     let width: Int
+    let buttonSpacing: Int
     let icon: DialogIcon
     let buttons: DialogButtons.Set
     let defaultButton: Int
@@ -22,6 +23,7 @@ struct DialogConfig {
         title: String,
         message: String,
         width: Int,
+        buttonSpacing: Int,
         icon: DialogIcon,
         buttons: DialogButtons.Set,
         defaultButton: Int,
@@ -31,6 +33,7 @@ struct DialogConfig {
         self.title = title
         self.message = message
         self.width = width
+        self.buttonSpacing = buttonSpacing
         self.icon = icon
         self.buttons = buttons
         self.defaultButton = defaultButton
@@ -38,3 +41,4 @@ struct DialogConfig {
         self.showTitleInBar = showTitleInBar
     }
 }
+
