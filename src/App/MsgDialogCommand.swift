@@ -75,7 +75,7 @@ struct MsgDialogCommand: ParsableCommand {
                 msgDialogDisplay -m "Proceed?" -t "Confirm" -b okcancel -d cancel
                 msgDialogDisplay -m "Try again?" -b retrycancel -d 1 -i warning -T true
             """,
-        version: "2.0.0 (Build: 16)"
+        version: "2.1.0 (Build: 21)"
     )
 
     // Required
