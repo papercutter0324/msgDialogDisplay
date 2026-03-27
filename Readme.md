@@ -11,9 +11,8 @@ Supports customizable messages, titles, button sets, icons, and behavior through
 - Multiple icon types (information, warning, error)
 - Predefined button sets (OK, Yes/No, Retry, etc.)
 - Default button selection by index or label
-- Adjustable dialog width
+- Adjustable dialog width and spacing between buttons
 - Optional vibrancy effect
-- Strict argument validation with clear error messages
 
 ---
 
@@ -53,6 +52,7 @@ msgDialogDisplay -m <message> [options]
 | `-w` | `--width <int>`                 | Custom dialog width                           |     √    | 400                      |
 | `-i` | `--icon <type>`                 | Message icon:                                 |     √    | "info"                   |
 | `-b` | `--buttons <set>`               | Button combination                            |     √    | "ok"                     |
+| `-s` | `--buttonSpacing <int>`         | Custom spaciong between buttons (min 10)      |     √    | 15                       |
 | `-d` | `--defaultButton <index/label>` | Default button                                |     √    | 1                        |
 | `-v` | `--vibrant <bool>`              | Use new vibrancy-style dialogs                |     √    | false                    |
 | `-T` | `--inTitleBar <bool>`           | Title in title bar instead of content window. |     √    | false                    |
